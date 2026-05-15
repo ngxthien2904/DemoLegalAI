@@ -1,0 +1,16 @@
+# HTTP Requests & Crawling
+requests==2.31.0
+beautifulsoup4==4.12.3
+
+# Data Analysis & Database
+pandas==2.2.0
+pyarrow
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# Processing (Phục vụ phần Unstructured & OCR trong tài liệu)
+lxml==5.1.0
+
+# Cài đặt thư viện Playwright
+playwright
+
