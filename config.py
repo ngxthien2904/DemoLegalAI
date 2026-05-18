@@ -2,6 +2,10 @@
 Cấu hình tập trung cho hệ thống Demo Legal AI Chatbot.
 """
 import os
+from dotenv import load_dotenv
+
+# Nạp biến môi trường từ file .env (nếu có)
+load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
