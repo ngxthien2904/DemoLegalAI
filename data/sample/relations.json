@@ -1,0 +1,146 @@
+[
+  {
+    "from": "ND_155_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "ND_128_2024",
+    "to": "ND_155_2020",
+    "type": "AMENDS",
+    "label": "Sửa đổi"
+  },
+  {
+    "from": "TT_118_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_118_2020",
+    "to": "ND_155_2020",
+    "type": "IMPLEMENTS",
+    "label": "Chi tiết hóa"
+  },
+  {
+    "from": "TT_119_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_119_2020",
+    "to": "ND_155_2020",
+    "type": "IMPLEMENTS",
+    "label": "Chi tiết hóa"
+  },
+  {
+    "from": "QD_22_2023",
+    "to": "LUAT_CK_2019",
+    "type": "IMPLEMENTS",
+    "label": "Thực thi"
+  },
+  {
+    "from": "QD_22_2023",
+    "to": "ND_155_2020",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  },
+  {
+    "from": "TT_96_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_96_2020",
+    "to": "ND_155_2020",
+    "type": "IMPLEMENTS",
+    "label": "Chi tiết hóa"
+  },
+  {
+    "from": "LUAT_DN_2020",
+    "to": "LUAT_CK_2019",
+    "type": "RELATED_TO",
+    "label": "Liên quan"
+  },
+  {
+    "from": "ND_128_2024",
+    "to": "LUAT_CK_2019",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  },
+  {
+    "from": "ND_156_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "ND_156_2020",
+    "to": "ND_155_2020",
+    "type": "RELATED_TO",
+    "label": "Liên quan"
+  },
+  {
+    "from": "TT_98_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_120_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "LUAT_THUE_TNCN_2007",
+    "to": "QD_22_2023",
+    "type": "RELATED_TO",
+    "label": "Liên quan"
+  },
+  {
+    "from": "LUAT_THUE_TNCN_2007",
+    "to": "LUAT_CK_2019",
+    "type": "RELATED_TO",
+    "label": "Liên quan"
+  },
+  {
+    "from": "ND_158_2020",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_58_2021",
+    "to": "LUAT_CK_2019",
+    "type": "GUIDES",
+    "label": "Hướng dẫn"
+  },
+  {
+    "from": "TT_58_2021",
+    "to": "ND_155_2020",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  },
+  {
+    "from": "CV_UBCK_2024",
+    "to": "LUAT_CK_2019",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  },
+  {
+    "from": "CV_UBCK_2024",
+    "to": "ND_156_2020",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  },
+  {
+    "from": "CV_UBCK_2024",
+    "to": "TT_120_2020",
+    "type": "REFERENCES",
+    "label": "Tham chiếu"
+  }
+]

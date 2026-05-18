@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal AI - Chatbot Tra Cứu Pháp Luật Chứng Khoán</title>
+    <meta name="description" content="Chatbot AI hỗ trợ tra cứu văn bản pháp luật chứng khoán Việt Nam">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">⚖️</span>
+                <h1>Legal AI</h1>
+            </div>
+            <p class="subtitle">Tra cứu Luật Chứng khoán</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-tab="chat" id="nav-chat">
+                <span>💬</span> Chat
+            </button>
+            <button class="nav-btn" data-tab="graph" id="nav-graph">
+                <span>🔗</span> Knowledge Graph
+            </button>
+            <button class="nav-btn" data-tab="docs" id="nav-docs">
+                <span>📄</span> Văn bản
+            </button>
+        </nav>
+
+        <div class="sidebar-docs" id="sidebar-docs-list">
+            <h3>Văn bản đã index</h3>
+            <div id="doc-list" class="doc-list"></div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="status-badge" id="status-badge">
+                <span class="status-dot"></span>
+                <span>Đang kết nối...</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Chat Tab -->
+        <section class="tab-content active" id="tab-chat">
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>Xin chào! Tôi là trợ lý pháp lý AI chuyên về <strong>luật chứng khoán Việt Nam</strong>.</p>
+                            <p>Bạn có thể hỏi tôi về:</p>
+                            <ul>
+                                <li>Quy định về chào bán, niêm yết chứng khoán</li>
+                                <li>Thuế chuyển nhượng, cổ tức</li>
+                                <li>Giờ giao dịch, biên độ giá</li>
+                                <li>Công bố thông tin, nghĩa vụ doanh nghiệp</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="suggested-questions" id="suggested-questions">
+                    <button class="suggest-btn" onclick="askSuggestion(this)">Luật Chứng khoán 2019 quy định gì về chào bán cổ phiếu?</button>
+                    <button class="suggest-btn" onclick="askSuggestion(this)">Thuế cổ tức hiện nay là bao nhiêu?</button>
+                    <button class="suggest-btn" onclick="askSuggestion(this)">Biên độ dao động giá tại HOSE là bao nhiêu?</button>
+                    <button class="suggest-btn" onclick="askSuggestion(this)">Nghị định nào hướng dẫn Luật Chứng khoán?</button>
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea id="chat-input" placeholder="Nhập câu hỏi pháp lý..." rows="1"></textarea>
+                        <button id="send-btn" onclick="sendMessage()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Knowledge Graph Tab -->
+        <section class="tab-content" id="tab-graph">
+            <div class="graph-container">
+                <div class="graph-header">
+                    <h2>🔗 Knowledge Graph - Quan hệ Văn bản Pháp luật</h2>
+                    <div class="graph-legend">
+                        <span class="legend-item"><span class="legend-dot" style="background:#6c5ce7"></span>Luật</span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#00b894"></span>Nghị định</span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#fdcb6e"></span>Thông tư</span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#e17055"></span>Quyết định</span>
+                    </div>
+                </div>
+                <div id="graph-network" class="graph-network"></div>
+            </div>
+        </section>
+
+        <!-- Documents Tab -->
+        <section class="tab-content" id="tab-docs">
+            <div class="docs-container">
+                <h2>📄 Danh sách Văn bản Pháp luật</h2>
+                <div id="docs-grid" class="docs-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

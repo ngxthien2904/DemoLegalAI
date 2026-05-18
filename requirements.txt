@@ -13,4 +13,15 @@ lxml==5.1.0
 
 # Cài đặt thư viện Playwright
 playwright
+playwright-stealth
 
+# Vector Database & Embeddings
+chromadb
+sentence-transformers
+
+# Web Backend
+flask
+flask-cors
+
+# LLM Client
+google-genai
