@@ -1,5 +1,10 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from sqlalchemy import Column, Integer, String
 from backend.database import Base
+
 
 class Document(Base):
     __tablename__ = "documents"
