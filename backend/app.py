@@ -49,7 +49,9 @@ def chat():
     try:
         engine = get_engine()
         chunks = engine.search(query)
-        result = ask_llm(query, chunks)
+        graph_context, graph_relations = engine.get_graph_context(chunks)
+        result = ask_llm(query, chunks, graph_context)
+        result["graph_relations"] = graph_relations
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -80,9 +82,31 @@ def documents():
 def graph():
     db = SessionLocal()
     try:
+        from sample_data import SAMPLE_DOCS, RELATIONS
+        
         docs = db.query(Document).all()
         nodes = [{"id": d.doc_id, "label": d.so_hieu, "title": d.ten, "group": d.loai} for d in docs]
-        edges = [] # Trả về trống vì PostgreSQL chưa có bảng quan hệ relations
+        
+        # Ánh xạ động từ quan hệ mẫu sang ID thực tế của PostgreSQL
+        id_to_sohieu = {d["id"]: d["so_hieu"] for d in SAMPLE_DOCS}
+        sohieu_to_docid = {d.so_hieu: d.doc_id for d in docs}
+        
+        edges = []
+        for r in RELATIONS:
+            from_sohieu = id_to_sohieu.get(r["from"])
+            to_sohieu = id_to_sohieu.get(r["to"])
+            
+            from_docid = sohieu_to_docid.get(from_sohieu)
+            to_docid = sohieu_to_docid.get(to_sohieu)
+            
+            if from_docid and to_docid:
+                edges.append({
+                    "from": from_docid,
+                    "to": to_docid,
+                    "label": r["label"],
+                    "type": r["type"]
+                })
+                
         return jsonify({"nodes": nodes, "edges": edges})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

@@ -14,7 +14,7 @@ Quy tắc:
 5. Nếu thông tin có thể đã thay đổi, cảnh báo người dùng kiểm tra lại."""
 
 
-def ask_llm(query, context_chunks):
+def ask_llm(query, context_chunks, graph_context=""):
     """Gửi câu hỏi + context tới Gemini API."""
     context_parts = []
     for i, chunk in enumerate(context_chunks, 1):
@@ -28,6 +28,7 @@ def ask_llm(query, context_chunks):
 
     prompt = f"""Ngữ cảnh pháp lý:
 {context}
+{graph_context}
 
 Câu hỏi của người dùng: {query}
 
@@ -64,7 +65,7 @@ def _fallback_response(query, chunks):
         parts.append(
             f"**{i}. {meta.get('ten', '')}** ({meta.get('so_hieu', '')})\n"
             f"- Hiệu lực: {meta.get('tinh_trang', 'N/A')}\n"
-            f"- Nội dung: {chunk['text'][:300]}...\n"
+            f"- Nội dung: {chunk['text']}\n"
         )
     return {
         "answer": "\n".join(parts),

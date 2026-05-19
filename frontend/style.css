@@ -439,6 +439,62 @@ body {
     font-weight: 600;
 }
 
+.graph-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.graph-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-secondary);
+    padding: 4px;
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.graph-search-wrapper input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 200px;
+}
+
+.graph-search-wrapper button {
+    border: none;
+    outline: none;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.graph-search-wrapper button:hover {
+    background: var(--accent-hover);
+}
+
+#graph-reset-btn {
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-glass);
+}
+
+#graph-reset-btn:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
 .graph-legend {
     display: flex;
     gap: 16px;
@@ -458,13 +514,111 @@ body {
     border-radius: 50%;
 }
 
+.graph-network-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-glass);
+}
+
 .graph-network {
     flex: 1;
     background: var(--bg-secondary);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-lg);
     min-height: 400px;
     box-shadow: var(--shadow-sm);
+}
+
+/* Sliding detail card inside the graph network */
+.graph-detail-card {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.graph-detail-card.hidden {
+    display: none;
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-card-btn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-card-btn:hover {
+    color: var(--red);
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.card-content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.card-info {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+}
+
+.ask-ai-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.ask-ai-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* ==================== Documents ==================== */
@@ -557,8 +711,134 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ==================== Responsive ==================== */
 @media (max-width: 768px) {
     .sidebar { display: none; }
     .docs-grid { grid-template-columns: 1fr; }
+}
+
+/* ==================== Sources and Graph Relations tags ==================== */
+.sources-list {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-glass);
+}
+
+.sources-list small {
+    color: var(--text-secondary);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.source-tag {
+    display: inline-block;
+    background: rgba(37, 99, 235, 0.06);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: #1e3a8a;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.source-tag:hover {
+    background: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+}
+
+.graph-relations-list {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-glass);
+}
+
+.graph-relations-list small {
+    color: #6c5ce7;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.graph-relation-tag {
+    display: inline-block;
+    background: rgba(108, 92, 231, 0.08);
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    color: #5f27cd;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(108, 92, 231, 0.05);
+}
+
+.graph-relation-tag:hover {
+    background: rgba(108, 92, 231, 0.15);
+    border-color: rgba(108, 92, 231, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(108, 92, 231, 0.1);
+}
+
+.doc-link {
+    cursor: pointer;
+    font-weight: 600;
+    color: #2563eb;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.doc-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.relation-label {
+    color: #64748b;
+    margin: 0 4px;
+    font-weight: 400;
+}
+
+/* ==================== Export to Excel Button ==================== */
+.message-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    border-top: 1px dashed var(--border-glass);
+    padding-top: 8px;
+}
+
+.export-excel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 124, 65, 0.07);
+    border: 1px solid rgba(16, 124, 65, 0.25);
+    color: #107c41;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(16, 124, 65, 0.05);
+}
+
+.export-excel-btn:hover {
+    background: rgba(16, 124, 65, 0.15);
+    border-color: rgba(16, 124, 65, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 124, 65, 0.1);
 }

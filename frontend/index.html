@@ -92,14 +92,41 @@
             <div class="graph-container">
                 <div class="graph-header">
                     <h2>🔗 Knowledge Graph - Quan hệ Văn bản Pháp luật</h2>
-                    <div class="graph-legend">
-                        <span class="legend-item"><span class="legend-dot" style="background:#6c5ce7"></span>Luật</span>
-                        <span class="legend-item"><span class="legend-dot" style="background:#00b894"></span>Nghị định</span>
-                        <span class="legend-item"><span class="legend-dot" style="background:#fdcb6e"></span>Thông tư</span>
-                        <span class="legend-item"><span class="legend-dot" style="background:#e17055"></span>Quyết định</span>
+                    <div class="graph-controls">
+                        <div class="graph-search-wrapper">
+                            <input type="text" id="graph-search-input" placeholder="Tìm số hiệu hoặc tên..." />
+                            <button id="graph-search-btn">🔍 Tìm</button>
+                            <button id="graph-reset-btn" class="hidden">🔄 Show All</button>
+                        </div>
+                        <div class="graph-legend">
+                            <span class="legend-item"><span class="legend-dot" style="background:#6c5ce7"></span>Luật</span>
+                            <span class="legend-item"><span class="legend-dot" style="background:#00b894"></span>Nghị định</span>
+                            <span class="legend-item"><span class="legend-dot" style="background:#fdcb6e"></span>Thông tư</span>
+                            <span class="legend-item"><span class="legend-dot" style="background:#e17055"></span>Quyết định</span>
+                        </div>
                     </div>
                 </div>
-                <div id="graph-network" class="graph-network"></div>
+                <div class="graph-network-wrapper">
+                    <div id="graph-network" class="graph-network"></div>
+                    
+                    <!-- Detail panel that slides up -->
+                    <div id="graph-detail-card" class="graph-detail-card hidden">
+                        <button class="close-card-btn" id="close-detail-btn">×</button>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="doc-card-type luat" id="graph-card-type">Loại</span>
+                                <span class="doc-card-id" id="graph-card-id">Số hiệu</span>
+                            </div>
+                            <h3 id="graph-card-title">Tên văn bản pháp luật</h3>
+                            <div class="card-info">
+                                <p><strong>🏛️ Cơ quan ban hành:</strong> <span id="graph-card-agency">Đang cập nhật</span></p>
+                                <p><strong>📅 Ngày hiệu lực:</strong> <span id="graph-card-date">Đang cập nhật</span></p>
+                                <p><strong>🟢 Tình trạng:</strong> <span id="graph-card-status">Còn hiệu lực</span></p>
+                            </div>
+                            <button class="ask-ai-btn" id="graph-card-ask-btn">💬 Tra cứu bằng AI</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

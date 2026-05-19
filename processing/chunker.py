@@ -44,14 +44,58 @@ def chunk_by_article(text, doc_metadata):
 
 
 def split_long_text(text, max_size, overlap):
-    """Chia text dài thành các phần nhỏ có overlap."""
+    """Chia text dài thành các phần nhỏ có overlap, bảo vệ ranh giới từ và câu."""
+    if len(text) <= max_size:
+        return [text.strip()]
+        
     chunks = []
     start = 0
-    while start < len(text):
+    text_len = len(text)
+    
+    while start < text_len:
+        # Nếu phần còn lại nhỏ hơn max_size, lấy toàn bộ
+        if start + max_size >= text_len:
+            chunks.append(text[start:].strip())
+            break
+            
         end = start + max_size
-        chunk = text[start:end]
+        
+        # Tìm ranh giới tốt nhất xung quanh điểm cắt mong muốn (end)
+        # Ưu tiên ngắt ở dấu xuống dòng hoặc kết thúc câu (. , ? , !) trong phạm vi khoảng 150 ký tự trước 'end'
+        best_break = -1
+        search_range = text[max(start, end - 150):end]
+        
+        # Tìm ranh giới dòng mới hoặc câu
+        for marker in ['\n', '. ', '? ', '! ']:
+            pos = search_range.rfind(marker)
+            if pos != -1:
+                # Điều chỉnh vị trí tuyệt đối trong text
+                abs_pos = max(start, end - 150) + pos + len(marker)
+                if abs_pos > best_break:
+                    best_break = abs_pos
+        
+        # Nếu không tìm thấy dấu câu, tìm khoảng trắng gần nhất
+        if best_break == -1:
+            pos = search_range.rfind(' ')
+            if pos != -1:
+                best_break = max(start, end - 150) + pos + 1
+                
+        # Nếu vẫn không tìm thấy, đành cắt tại 'end'
+        if best_break == -1 or best_break <= start:
+            best_break = end
+            
+        chunk = text[start:best_break]
         chunks.append(chunk.strip())
-        start = end - overlap
+        
+        # Lùi lại overlap để bắt đầu chunk tiếp theo, nhưng đảm bảo lùi lại đúng từ
+        start = best_break - overlap
+        # Điều chỉnh start để không cắt giữa chừng một từ
+        if start > 0 and start < text_len:
+            # Lùi start về khoảng trắng gần nhất để không cắt từ
+            while start > 0 and text[start] != ' ' and text[start] != '\n':
+                start -= 1
+            start = max(0, start)
+            
     return [c for c in chunks if c]
 
 

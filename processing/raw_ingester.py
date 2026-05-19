@@ -47,6 +47,145 @@ def extract_text_from_docx(docx_path):
         print(f"Lỗi đọc DOCX {docx_path}: {e}")
     return text
 
+METADATA_FALLBACK_MAP = {
+    "2019_581 + 582_36-vbhn-btc.pdf": {
+        "so_hieu": "36/VBHN-BTC",
+        "ten": "Văn bản hợp nhất 36/VBHN-BTC hướng dẫn chào bán chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2019-12-30",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_54.signed.pdf": {
+        "so_hieu": "54/2019/QH14",
+        "ten": "Luật Chứng khoán số 54/2019/QH14",
+        "co_quan": "Quốc hội",
+        "ngay_hieu_luc": "2021-01-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Luật"
+    },
+    "vanbangoc_tt 28.2020.btc.pdf": {
+        "so_hieu": "28/2020/TT-BTC",
+        "ten": "Thông tư 28/2020/TT-BTC quy định về niêm yết chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2020-06-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_116-2020-tt-btc.pdf": {
+        "so_hieu": "116/2020/TT-BTC",
+        "ten": "Thông tư 116/2020/TT-BTC hướng dẫn quản lý quỹ đầu tư chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2021-02-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_117-2020-tt-btc.pdf": {
+        "so_hieu": "117/2020/TT-BTC",
+        "ten": "Thông tư 117/2020/TT-BTC hướng dẫn thành lập và quản lý quỹ thành viên",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2021-02-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_155.signed.pdf": {
+        "so_hieu": "155/2020/NĐ-CP",
+        "ten": "Nghị định 155/2020/NĐ-CP quy định chi tiết thi hành một số điều của Luật Chứng khoán",
+        "co_quan": "Chính phủ",
+        "ngay_hieu_luc": "2021-01-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Nghị định"
+    },
+    "vanbangoc_73_19012024_153629.pdf.pdf": {
+        "so_hieu": "73/2013/TT-BTC",
+        "ten": "Thông tư 73/2013/TT-BTC hướng dẫn chi tiết về niêm yết chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2013-07-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_nq 26.2024.pdf": {
+        "so_hieu": "26/2024/NQ-HĐQT",
+        "ten": "Nghị quyết số 26/2024/NQ-HĐQT",
+        "co_quan": "Hội đồng Quản trị",
+        "ngay_hieu_luc": "2024-05-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Quyết định"
+    },
+    "vanbangoc_nq 34.2024.pdf": {
+        "so_hieu": "34/2024/NQ-HĐQT",
+        "ten": "Nghị quyết số 34/2024/NQ-HĐQT",
+        "co_quan": "Hội đồng Quản trị",
+        "ngay_hieu_luc": "2024-06-20",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Quyết định"
+    },
+    "vanbangoc_77.tt.pdf": {
+        "so_hieu": "77/2020/TT-BTC",
+        "ten": "Thông tư 77/2020/TT-BTC hướng dẫn chế độ kế toán cho công ty chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2021-01-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_nq số 69.2025 ngày 27.11.2025.pdf": {
+        "so_hieu": "69/2025/NQ-HĐQT",
+        "ten": "Nghị quyết số 69/2025/NQ-HĐQT ngày 27/11/2025",
+        "co_quan": "Hội đồng Quản trị",
+        "ngay_hieu_luc": "2025-11-27",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Quyết định"
+    },
+    "vanbangoc_10.2013.ttlt.btp.bca.tandtc.vksndtc.btc.pdf": {
+        "so_hieu": "10/2013/TTLT",
+        "ten": "Thông tư liên tịch 10/2013/TTLT-BTP-BCA-TANDTC-VKSNDTC-BTC",
+        "co_quan": "Bộ Tư pháp - Bộ Công an - TANDTC - VKSNDTC - Bộ Tài chính",
+        "ngay_hieu_luc": "2013-08-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_43.2013.tt.blđtbxh.pdf": {
+        "so_hieu": "43/2013/TT-BLĐTBXH",
+        "ten": "Thông tư 43/2013/TT-BLĐTBXH quản lý lao động, tiền lương",
+        "co_quan": "Bộ Lao động - Thương binh và Xã hội",
+        "ngay_hieu_luc": "2013-12-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_09-2014-tt-btc_09-2014-tt-btc.pdf": {
+        "so_hieu": "09/2014/TT-BTC",
+        "ten": "Thông tư 09/2014/TT-BTC về phí bán đấu giá chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2014-03-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "vanbangoc_60.2015.nđ.cp.pdf": {
+        "so_hieu": "60/2015/NĐ-CP",
+        "ten": "Nghị định 60/2015/NĐ-CP sửa đổi bổ sung Nghị định 58/2012/NĐ-CP",
+        "co_quan": "Chính phủ",
+        "ngay_hieu_luc": "2015-09-01",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Nghị định"
+    },
+    "vanbangoc_73-2013-tt-btc_73-2013-tt-btc.pdf": {
+        "so_hieu": "73/2013/TT-BTC",
+        "ten": "Thông tư 73/2013/TT-BTC hướng dẫn niêm yết chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2013-07-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    },
+    "tvhienthitoanvan_20.vbhn.btc.pdf": {
+        "so_hieu": "20/VBHN-BTC",
+        "ten": "Văn bản hợp nhất 20/VBHN-BTC thi hành Luật Chứng khoán",
+        "co_quan": "Bộ Tài chính",
+        "ngay_hieu_luc": "2018-05-15",
+        "tinh_trang": "Còn hiệu lực",
+        "loai": "Thông tư"
+    }
+}
+
 def parse_metadata_from_filename(filename):
     """Trích xuất sơ bộ số hiệu và loại văn bản từ tên file bằng Regex."""
     loai = "Văn bản"
@@ -54,6 +193,11 @@ def parse_metadata_from_filename(filename):
     
     filename_lower = filename.lower()
     
+    # Ưu tiên kiểm tra map fallback trước để có kết quả chính xác nhất
+    if filename_lower in METADATA_FALLBACK_MAP:
+        meta = METADATA_FALLBACK_MAP[filename_lower]
+        return meta["loai"], meta["so_hieu"]
+        
     if "nq" in filename_lower or "nghị quyết" in filename_lower:
         loai = "Nghị quyết"
     elif "nd" in filename_lower or "nđ" in filename_lower or "nghị định" in filename_lower:
@@ -72,17 +216,25 @@ def parse_metadata_from_filename(filename):
 
 def extract_metadata_with_llm(text_content, filename):
     """Sử dụng Gemini API để trích xuất các cột thông tin bị thiếu từ nội dung văn bản."""
+    # Nếu tệp nằm trong map fallback, sử dụng trực tiếp để tránh tải API khi bị rate-limit
+    fn_lower = filename.lower()
+    if fn_lower in METADATA_FALLBACK_MAP:
+        meta = METADATA_FALLBACK_MAP[fn_lower]
+        return meta["so_hieu"], meta["ten"], meta["co_quan"], meta["ngay_hieu_luc"], meta["tinh_trang"]
+        
     if not GEMINI_API_KEY:
         print("  [!] Không tìm thấy GEMINI_API_KEY. Bỏ qua bước bóc tách bằng LLM.")
-        return "Đang cập nhật", "Đang cập nhật", "Còn hiệu lực"
+        return "Đang cập nhật", filename, "Đang cập nhật", "Đang cập nhật", "Còn hiệu lực"
         
     # Trích xuất 2000 ký tự đầu tiên
     preamble = text_content[:2000]
     
     prompt = f"""Bạn là một chuyên gia phân tích văn bản pháp luật. Hãy phân tích đoạn trích sau từ đầu một văn bản pháp luật Việt Nam (tên file gốc là '{filename}') và trích xuất các thông tin sau dưới dạng JSON cực kỳ ngắn gọn:
-1. "co_quan": Tên cơ quan ban hành (ví dụ: "Chính phủ", "Bộ Tài chính", "Quốc hội", "Ủy ban Thường vụ Quốc hội").
-2. "ngay_hieu_luc": Ngày có hiệu lực của văn bản (định dạng YYYY-MM-DD, ví dụ: "2021-01-01"). Nếu không tìm thấy ngày hiệu lực cụ thể, hãy cố gắng đoán dựa vào ngày ký hoặc ngày ban hành, nếu không thể đoán được hãy ghi "Đang cập nhật".
-3. "tinh_trang": Tình trạng hiệu lực hiện tại của văn bản này. Mặc định ghi "Còn hiệu lực" trừ khi văn bản ghi rõ đã bị thay thế hoặc hết hiệu lực.
+1. "so_hieu": Số hiệu chính thức của văn bản (ví dụ: "155/2020/NĐ-CP", "54/2019/QH14", "28/2020/TT-BTC"). Hãy cố gắng tìm số hiệu chính thức ghi ở góc trái đầu văn bản, trích xuất đầy đủ cả phần số và phần ký hiệu viết tắt.
+2. "ten": Tên đầy đủ chính thức của văn bản pháp luật đó (ví dụ: "Nghị định 155/2020/NĐ-CP quy định chi tiết thi hành một số điều của Luật Chứng khoán").
+3. "co_quan": Tên cơ quan ban hành (ví dụ: "Chính phủ", "Bộ Tài chính", "Quốc hội", "Ủy ban Thường vụ Quốc hội").
+4. "ngay_hieu_luc": Ngày có hiệu lực của văn bản (định dạng YYYY-MM-DD, ví dụ: "2021-01-01"). Nếu không tìm thấy ngày hiệu lực cụ thể, hãy cố gắng đoán dựa vào ngày ký hoặc ngày ban hành, nếu không thể đoán được hãy ghi "Đang cập nhật".
+5. "tinh_trang": Tình trạng hiệu lực hiện tại của văn bản này. Mặc định ghi "Còn hiệu lực" trừ khi văn bản ghi rõ đã bị thay thế hoặc hết hiệu lực.
 
 Đoạn trích văn bản:
 \"\"\"
@@ -91,6 +243,8 @@ def extract_metadata_with_llm(text_content, filename):
 
 Trả về kết quả dưới dạng JSON thuần túy, không có thẻ ```json hay bất kỳ chữ giải thích nào khác. Định dạng bắt buộc:
 {{
+  "so_hieu": "...",
+  "ten": "...",
   "co_quan": "...",
   "ngay_hieu_luc": "...",
   "tinh_trang": "..."
@@ -107,19 +261,30 @@ Trả về kết quả dưới dạng JSON thuần túy, không có thẻ ```jso
         clean_text = response.text.strip().replace("```json", "").replace("```", "").strip()
         data = json.loads(clean_text)
         
+        so_hieu = data.get("so_hieu", "Đang cập nhật")
+        ten = data.get("ten", filename)
         co_quan = data.get("co_quan", "Đang cập nhật")
         ngay_hieu_luc = data.get("ngay_hieu_luc", "Đang cập nhật")
         tinh_trang = data.get("tinh_trang", "Còn hiệu lực")
         
-        return co_quan, ngay_hieu_luc, tinh_trang
+        return so_hieu, ten, co_quan, ngay_hieu_luc, tinh_trang
     except Exception as e:
         print(f"  [!] Lỗi LLM trích xuất metadata cho {filename}: {e}")
-        return "Đang cập nhật", "Đang cập nhật", "Còn hiệu lực"
+        return "Đang cập nhật", filename, "Đang cập nhật", "Đang cập nhật", "Còn hiệu lực"
 
 def ingest_data():
     print("[*] Đang khởi tạo kết nối DB và ChromaDB...")
     db = SessionLocal()
     
+    # Xóa sạch bảng PostgreSQL cũ để tránh trùng lặp Unknown
+    print("[*] Đang làm sạch cơ sở dữ liệu cũ...")
+    try:
+        db.query(Document).delete()
+        db.commit()
+    except Exception as e:
+        print(f"  [!] Không thể xóa bảng Document: {e}")
+        db.rollback()
+        
     os.makedirs(CHROMA_DIR, exist_ok=True)
     chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
     
@@ -181,26 +346,34 @@ def ingest_data():
             continue
             
         # 3. Trích xuất metadata bằng Regex và LLM
-        loai, so_hieu = parse_metadata_from_filename(target_file)
-        doc_id = f"doc_{folder}_{so_hieu}".replace(".", "_").replace("/", "_")
+        loai, _ = parse_metadata_from_filename(target_file)
         
         print(f"  [*] Đang xử lý tài liệu: {target_file}...")
-        print("      → Đang gọi Gemini bóc tách cơ quan ban hành, ngày hiệu lực...")
-        co_quan, ngay_hieu_luc, tinh_trang = extract_metadata_with_llm(text_content, target_file)
-        print(f"      ✓ Kết quả: CQ: {co_quan} | Ngày HL: {ngay_hieu_luc} | TT: {tinh_trang}")
+        print("      → Đang gọi Gemini bóc tách số hiệu, tên, cơ quan ban hành...")
+        so_hieu, ten, co_quan, ngay_hieu_luc, tinh_trang = extract_metadata_with_llm(text_content, target_file)
         
-        # Lệnh Delay: Chờ 4 giây đối với tài khoản Gemini miễn phí để không bị lỗi 429 (Tối đa 15 yêu cầu/phút)
-        if GEMINI_API_KEY:
+        # Nếu LLM không tìm thấy số hiệu hợp lệ, fallback về regex tên file
+        if so_hieu == "Đang cập nhật" or not so_hieu or so_hieu.strip() == "":
+            _, fallback_sohieu = parse_metadata_from_filename(target_file)
+            so_hieu = fallback_sohieu if fallback_sohieu else "Unknown"
+            
+        print(f"      ✓ Kết quả: Số hiệu: {so_hieu} | CQ: {co_quan} | Ngày HL: {ngay_hieu_luc}")
+        
+        doc_id = f"doc_{folder}_{so_hieu}".replace(".", "_").replace("/", "_").replace("-", "_").replace(" ", "_")
+        
+        # Lệnh Delay: Chờ 4 giây đối vì tài khoản Gemini miễn phí (Tối đa 15 yêu cầu/phút)
+        # Chỉ dừng khi thực sự gọi Gemini API (tệp không nằm trong fallback map)
+        if GEMINI_API_KEY and target_file.lower() not in METADATA_FALLBACK_MAP:
             print("      [Delay] Đang tạm dừng 4 giây để tránh lỗi quá tải API (429 Rate Limit)...")
             time.sleep(4)
         
-        # Lưu vào PostgreSQL (Nếu đã có thì cập nhật, chưa có thì tạo mới)
+        # Lưu vào PostgreSQL 
         existing_doc = db.query(Document).filter(Document.doc_id == doc_id).first()
         if not existing_doc:
             new_doc = Document(
                 doc_id=doc_id,
                 so_hieu=so_hieu,
-                ten=target_file,
+                ten=ten,
                 loai=loai,
                 co_quan=co_quan,
                 ngay_hieu_luc=ngay_hieu_luc,
@@ -212,6 +385,8 @@ def ingest_data():
             db.refresh(new_doc)
             pg_doc_id = new_doc.id
         else:
+            existing_doc.ten = ten
+            existing_doc.so_hieu = so_hieu
             existing_doc.co_quan = co_quan
             existing_doc.ngay_hieu_luc = ngay_hieu_luc
             existing_doc.tinh_trang = tinh_trang
@@ -223,7 +398,7 @@ def ingest_data():
             "doc_id": doc_id,
             "pg_doc_id": pg_doc_id,
             "so_hieu": so_hieu,
-            "ten": target_file,
+            "ten": ten,
             "loai": loai,
             "co_quan": co_quan,
             "ngay_hieu_luc": ngay_hieu_luc,
