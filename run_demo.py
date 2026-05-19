@@ -32,18 +32,13 @@ def main():
     check_deps()
     print("  ✅ Dependencies OK")
 
-    # Step 2: Generate sample data
-    print("\n[2/4] Tạo dữ liệu mẫu...")
-    from sample_data import generate_sample_data
-    generate_sample_data()
-
-    # Step 3: Build index
-    print("\n[3/4] Xây dựng vector index (có thể mất 1-2 phút lần đầu)...")
-    from processing.indexer import build_index
-    success = build_index()
-    if not success:
-        print("[!] Không thể xây dựng index. Dừng lại.")
-        return
+    # Step 2 & 3: (Đã bỏ qua vì chúng ta đã nạp dữ liệu thật bằng raw_ingester.py)
+    # print("\n[2/4] Tạo dữ liệu mẫu...")
+    # from sample_data import generate_sample_data
+    # generate_sample_data()
+    # print("\n[3/4] Xây dựng vector index (có thể mất 1-2 phút lần đầu)...")
+    # from processing.indexer import build_index
+    # build_index()
 
     # Step 4: Start server
     print("\n[4/4] Khởi động server...")

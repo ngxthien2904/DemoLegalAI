@@ -187,8 +187,36 @@ async function loadDocsList() {
 
         const list = document.getElementById("doc-list");
         list.innerHTML = docs.map(d =>
-            `<div class="doc-item"><div class="doc-type">${d.loai}</div>${d.so_hieu}</div>`
+            `<div class="doc-item" data-id="${d.id}"><div class="doc-type">${d.loai}</div>${d.so_hieu}</div>`
         ).join("");
+
+        // Thêm sự kiện click cho từng văn bản ở sidebar
+        document.querySelectorAll("#doc-list .doc-item").forEach(item => {
+            item.addEventListener("click", () => {
+                // 1. Kích hoạt chuyển sang tab "Văn bản"
+                const docsBtn = document.getElementById("nav-docs");
+                if (docsBtn) docsBtn.click();
+                
+                // 2. Định vị card tương ứng, cuộn tới và highlight
+                setTimeout(() => {
+                    const cards = document.querySelectorAll(".doc-card");
+                    const soHieuTarget = item.textContent.replace(item.querySelector(".doc-type").textContent, "").trim();
+                    
+                    cards.forEach(card => {
+                        const cardIdEl = card.querySelector(".doc-card-id");
+                        if (cardIdEl && cardIdEl.textContent.trim() === soHieuTarget) {
+                            card.scrollIntoView({ behavior: "smooth", block: "center" });
+                            card.classList.add("highlight");
+                            
+                            // Tự động tắt highlight sau 2 giây
+                            setTimeout(() => {
+                                card.classList.remove("highlight");
+                            }, 2000);
+                        }
+                    });
+                }, 200); // Đợi 200ms để tab chuyển và render hoàn tất
+            });
+        });
 
         // Update status
         const badge = document.getElementById("status-badge");

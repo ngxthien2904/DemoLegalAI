@@ -27,3 +27,6 @@ CHUNK_OVERLAP = 100
 FLASK_HOST = "0.0.0.0"
 FLASK_PORT = 5000
 FLASK_DEBUG = True
+
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/Demo_Legal_AI")
+

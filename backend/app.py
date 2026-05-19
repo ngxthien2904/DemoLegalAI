@@ -9,6 +9,8 @@ from flask_cors import CORS
 from config import FLASK_HOST, FLASK_PORT, FLASK_DEBUG, FRONTEND_DIR, SAMPLE_DIR
 from backend.search_engine import SearchEngine
 from backend.llm_client import ask_llm
+from backend.database import SessionLocal
+from backend.models import Document
 
 app = Flask(__name__, static_folder=FRONTEND_DIR)
 CORS(app)
@@ -55,32 +57,37 @@ def chat():
 
 @app.route("/api/documents")
 def documents():
-    doc_path = os.path.join(SAMPLE_DIR, "documents.json")
-    if not os.path.exists(doc_path):
-        return jsonify([])
-    with open(doc_path, "r", encoding="utf-8") as f:
-        docs = json.load(f)
-    summary = [{"id": d["id"], "so_hieu": d["so_hieu"], "ten": d["ten"],
-                "loai": d["loai"], "tinh_trang": d["tinh_trang"]} for d in docs]
-    return jsonify(summary)
+    db = SessionLocal()
+    try:
+        docs = db.query(Document).order_by(Document.id).all()
+        summary = [{
+            "id": d.doc_id,
+            "so_hieu": d.so_hieu,
+            "ten": d.ten,
+            "loai": d.loai,
+            "co_quan": d.co_quan or "Đang cập nhật",
+            "ngay_hieu_luc": d.ngay_hieu_luc or "Đang cập nhật",
+            "tinh_trang": d.tinh_trang or "Còn hiệu lực"
+        } for d in docs]
+        return jsonify(summary)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
 
 
 @app.route("/api/graph")
 def graph():
-    rel_path = os.path.join(SAMPLE_DIR, "relations.json")
-    doc_path = os.path.join(SAMPLE_DIR, "documents.json")
-    if not os.path.exists(rel_path):
-        return jsonify({"nodes": [], "edges": []})
-    with open(doc_path, "r", encoding="utf-8") as f:
-        docs = json.load(f)
-    with open(rel_path, "r", encoding="utf-8") as f:
-        rels = json.load(f)
-
-    nodes = [{"id": d["id"], "label": d["so_hieu"], "title": d["ten"],
-              "group": d["loai"]} for d in docs]
-    edges = [{"from": r["from"], "to": r["to"], "label": r["label"],
-              "type": r["type"]} for r in rels]
-    return jsonify({"nodes": nodes, "edges": edges})
+    db = SessionLocal()
+    try:
+        docs = db.query(Document).all()
+        nodes = [{"id": d.doc_id, "label": d.so_hieu, "title": d.ten, "group": d.loai} for d in docs]
+        edges = [] # Trả về trống vì PostgreSQL chưa có bảng quan hệ relations
+        return jsonify({"nodes": nodes, "edges": edges})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
 
 
 def start_server():
